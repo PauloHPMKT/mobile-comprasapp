@@ -28,7 +28,7 @@ export function BaseInput({
   return (
     <View
       className={`
-        flex-row justify-center items-center h-14 rounded-lg px-2 border border-gray-300
+        flex-row justify-center items-center h-14 rounded-lg px-2 border border-gray-200
         ${hasError && 'border-2 border-red-500'}
         ${customStyle}
       `}
