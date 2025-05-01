@@ -1,14 +1,13 @@
+import { FontAwesome5 } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
-import { Dimensions, Platform, Text, View } from "react-native";
-// import { BaseInput } from "@/src/components/BaseInput";
-// import { MainButton } from "@/src/components/MainButton";
-// import { TitleBox } from "@/src/components/TitleBox";
-// import { FontAwesome5 } from '@expo/vector-icons';
-// import { OverlayModal } from "@/src/components/OverlayModal";
-// import CartIcon from '../../assets/images/cart-icon.svg';
-// import EmptyMarket from '../../assets/images/empty-market.svg';
+import { Dimensions, Image, Platform, ScrollView, Text, View } from "react-native";
+
+import { BaseInput } from "@/src/components/BaseInput";
+import { MainButton } from "@/src/components/MainButton";
+import { OverlayModal } from "@/src/components/OverlayModal";
+import { TitleBox } from "@/src/components/TitleBox";
 
 const isAndroid = Platform.OS === "android";
 const { height: screenHeight } = Dimensions.get("window");
@@ -19,7 +18,7 @@ export default function Home() {
   const [isTitleBoxVisible, setIsTitleBoxVisible] = useState(false);
   const [title, setTitle] = useState("");
   const [dropMenuVisible, setDropMenuVisible] = useState(false);
-  // aqui será carregado via requisição
+  // // aqui será carregado via requisição
   const [list, setList] = useState([
     {
       id: 1,
@@ -89,9 +88,12 @@ export default function Home() {
     <>
       {!list.length ? (
         <View className="flex-1 gap-4 bg-white justify-center items-center relative">
-          <Text>Não tem nadaß</Text>
-          {/* <View className="items-center gap-2 mb-48">
-            <EmptyMarket width={240} />
+          <View className="items-center gap-2 mb-48">
+            <Image
+              source={require('../../assets/images/img-casas.png')}
+              className="w-56"
+              resizeMode="contain"
+            />
             <Text className="text-[#9CA3AF] -mt-20 text-center">Nenhuma lista encontrada</Text>
             <MainButton
               onPress={() => setIsTitleBoxVisible(true)}
@@ -99,24 +101,27 @@ export default function Home() {
             >
               <Text className="text-white font-bold text-center w-fit px-6">Ir às compras</Text>
             </MainButton>
-          </View> */}
+          </View>
         </View>
       ) : (
         <View className=" bg-white justify-center">
-          <Text>Deu certo</Text>
-          {/* <View className="flex-row items-center gap-3 w-full relative">
+          <View className="flex-row items-center gap-3 w-full relative">
             <BaseInput placeholder="Buscar list por período..." customStyle="w-full h-[42px] pr-[16%]" />
             <MainButton className="bg-red-600 rounded-lg justify-center items-center w-[15%] h-[42px] absolute right-0">
               <FontAwesome5 name="search" size={20} color="white" />
             </MainButton>
           </View>
           <View className="mt-6">
-            <View className="bg-[#E2E2E2] rounded-md p-3 relative overflow-hidden mb-3">
+            <View className="bg-[#E2E2E2] rounded-md p-3 pb-4 relative overflow-hidden mb-3">
               <View className="flex-row items-center justify-between">
                 <Text className="text-[14px] font-semibold">
                   Valor total de compras no ano
                 </Text>
-                <CartIcon width={50} height={50} />
+                <Image
+                  source={require('../../assets/images/Logo-carrinho-verde.png')}
+                  className="w-8"
+                  resizeMode="contain"
+                />
               </View>
               <View className="mb-3 -mt-2">
                 <Text className="font-bold text-[20px]">R$ 1.125,25</Text>
@@ -176,7 +181,7 @@ export default function Home() {
             <TitleBox
               onSubmitTitle={handleKeepListTitle}
             />
-          </OverlayModal> */}
+          </OverlayModal>
         </View>
       )}
     </>
