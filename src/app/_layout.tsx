@@ -10,6 +10,7 @@ export default function RootLayout() {
 
   useEffect(() => {
     const verifyAuth = async () => {
+      console.log('Verifying authentication...', checkedAuth);
       const token = await AsyncStorage.getItem('token');
 
       if (!token) {
@@ -22,7 +23,7 @@ export default function RootLayout() {
     };
 
     verifyAuth();
-  }, [router]);
+  }, [checkedAuth, router]);
 
   return <Slot />;
 }
