@@ -14,9 +14,9 @@ export default function RootLayout() {
       const token = await AsyncStorage.getItem('token');
 
       if (!token) {
-        router.replace('../main/dashboard');
+        return router.replace('../auth/login');
       } else {
-        router.replace('./auth/login');
+        router.replace('../main/dashboard');
       }
 
       setCheckedAuth(true);
