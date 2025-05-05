@@ -1,4 +1,5 @@
 import { AccountModel } from "@/src/modules/user/domain/models/account";
+import { UserModel } from "@/src/modules/user/domain/models/user";
 import { createContext } from "react";
 
 interface User {
@@ -10,9 +11,10 @@ interface User {
   createdAt: string;
 }
 
+
 interface AuthContextType {
   user: User | null;
-  login: ({ email, password }: AccountModel.SignIn) => Promise<boolean>;
+  login: ({ email, password }: AccountModel.SignIn) => Promise<UserModel.Result | boolean>;
 }
 
 export const AuthContext = createContext<AuthContextType>({} as AuthContextType);

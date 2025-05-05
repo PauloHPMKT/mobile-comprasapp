@@ -84,6 +84,8 @@ export default function Home() {
     }
   };
 
+  const toCategories = () => router.navigate("./categories")
+
   return (
     <>
       {!list.length ? (
@@ -169,6 +171,8 @@ export default function Home() {
                   <Text className="py-6 mx-4" onPress={handleOpenTitleBox}>Criar lista</Text>
                   <View className="border border-gray-100"></View>
                   <Text className="py-6 mx-4">Minhas listas</Text>
+                  <View className="border border-gray-100"></View>
+                  <Text className="py-6 mx-4" onPress={toCategories}>Categorias</Text>
                 </View>
               )}
             </View>

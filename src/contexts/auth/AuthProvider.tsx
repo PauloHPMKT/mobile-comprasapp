@@ -14,16 +14,15 @@ interface AuthProviderProps {
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<UserModel.Result | null>(null);
 
-  const login = async ({ email, password }: AccountModel.SignIn): Promise<boolean> => {
+  const login = async ({ email, password }: AccountModel.SignIn): Promise<UserModel.Result | boolean> => {
     const data = await authSignIn.execute(email, password);
 
     if (data) {
       const { token, user } = data;
       setUser(user);
       await AsyncStorage.setItem("token", token);
-      await AsyncStorage.setItem("user", JSON.stringify(user));
 
-      return true;
+      return user;
     }
     return false;
   };

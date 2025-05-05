@@ -4,14 +4,17 @@ import { CustomCheckBox } from "@/src/components/CustomCheckBox";
 import { MainButton } from "@/src/components/MainButton";
 import { AuthContext } from "@/src/contexts/auth/AuthContext";
 import { AccountModel } from "@/src/modules/user/domain/models/account";
+import { setUser } from "@/src/store/auth/auth-reducer";
 import { useRouter } from "expo-router";
 import React, { useContext } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Text, TouchableOpacity, View } from "react-native";
+import { useDispatch } from "react-redux";
 
 type LoginProps = AccountModel.SignIn;
 
 export default function Login() {
+  const dispatch = useDispatch();
   const router = useRouter();
   const auth = useContext(AuthContext);
 
@@ -32,6 +35,11 @@ export default function Login() {
       password: data.password,
     }
     const result = await auth.login(toLogin);
+
+    const userData = typeof result !== "boolean" ? result : null;
+
+    dispatch(setUser(userData!));
+
     if (result) {
       router.push("../main/dashboard");
     }
