@@ -1,6 +1,6 @@
 import { SignInUseCase } from "../../auth/data/usecases/signin";
 import { AuthApiRepository } from "../../auth/infra/auth-repository/api-auth-repository";
-import { HttpAxiosInstance } from "../../auth/infra/axios/http";
+import { HttpAxiosInstance } from "../../shared/api/axios/http";
 
 export const makeAuthSignInFactory = (): SignInUseCase => {
   const httpInstance = HttpAxiosInstance.getInstance().axios;
