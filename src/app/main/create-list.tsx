@@ -2,6 +2,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
+  Alert,
   FlatList,
   Image,
   KeyboardAvoidingView,
@@ -17,17 +18,19 @@ import { DescriptionBox } from "@/src/components/DescriptionBox";
 import { MainButton } from "@/src/components/MainButton";
 import { OverlayModal } from "@/src/components/OverlayModal";
 import { PurchaseListItem } from "@/src/components/PurchaseListItem";
+import { makeCreatePurchaseListController } from "@/src/modules/main/factories/purchase-list/presentation/create-list-controller";
 import { ListProps } from "@/src/modules/purchase-list/domain/models/create-list";
 import { Item } from "@/src/modules/purchase-list/domain/models/item-dto";
-// import { makeSavePurchaseListController } from "@/src/modules/ui/main/factories/create-purchase-list";
+import { useRouter } from "expo-router";
 
 const isAndroid = Platform.OS === "android";
-// const controller = makeSavePurchaseListController();
+const controller = makeCreatePurchaseListController();
 
 export default function CreateList() {
+  const router = useRouter();
   const [items, setItems] = useState<Item[]>([]);
   const [title, setTitle] = useState("");
-  const [newItem, setNewItem] = useState({ name: "", quantity: "1" });
+  const [newItem, setNewItem] = useState({ name: "", quantity: "" });
   const [isDescriptionBoxVisible, setIsDescriptionBoxVisible] = useState(false);
   const [description, setDescription] = useState("");
 
@@ -109,21 +112,29 @@ export default function CreateList() {
         unitPrice: price,
       })),
     };
-    console.log("List data to save:", listData);
-    // const response = await controller.handle(listData);
-    // if (response.success) {
-    //   setItems([]);
-    //   setDescription("");
-    //   setIsDescriptionBoxVisible(false);
-    //   // navegar para "Minhas listas"
-    // } else {
-    //   console.error("Erro ao salvar lista:", response.error);
-    // }
+    const response = await controller.handle(listData);
+    if (response.success) {
+      setItems([]);
+      setDescription("");
+      setIsDescriptionBoxVisible(false);
+      // navegar para "Minhas listas"
+    }
   }, [title, description, items]);
 
   const handleDelete = (id: number) => {
     setItems((prevItems) => prevItems.filter((item) => item.localId !== id));
   };
+
+  const backToDashboard = () => {
+    if (items.length || newItem.name.length || newItem.quantity.length) {
+      Alert.alert(
+        "Você tem certeza que deseja voltar? As informações não salvas serão perdidas."
+      );
+      return router.navigate("../");
+    }
+
+    return router.navigate("../")
+  }
 
   const renderItem = useCallback<ListRenderItem<Item>>(({ item }) => (
       <View className="mb-2">
@@ -153,11 +164,21 @@ export default function CreateList() {
 
   return (
     <View className="flex-1 bg-white">
-      <View className="mb-4">
-        <Text className="text-2xl font-bold">{title}</Text>
-        <Text className="text-gray-500 text-sm">
-          Insira os dados e preencha sua lista de compras
-        </Text>
+      <View className="mb-4 flex-row items-start">
+        <FontAwesome5
+          name="arrow-left"
+          size={18}
+          color="black"
+          onPress={backToDashboard}
+        />
+        <View className="ml-8">
+          <Text className="text-2xl font-bold">
+            {title && title.length > 20 ? `${title.slice(0, 20)}...` : title}
+          </Text>
+          <Text className="text-gray-500 text-sm">
+            Insira os dados e preencha sua lista de compras
+          </Text>
+        </View>
       </View>
 
       <View className="flex-row gap-2 items-center justify-between mb-4 border-b border-gray-300 pb-4">
